@@ -32,7 +32,7 @@ COPY package*.json ./
 # 4. Install dependencies
 RUN npm ci
 
-# 5. Copy the rest of the project files
+# 5. Copy rest of the project files
 COPY . .
 
 # 6. Build the Next.js app
@@ -41,10 +41,10 @@ RUN npm run build
 # 7. Production image
 FROM node:20-alpine AS runner
 
-# 8. Set working directory for the production image
+# 8. Set working directory again for the production image
 WORKDIR /app
 
-# 9. Copy only necessary files from the build stage
+# 9. Copy only the necessary files from the build image
 COPY --from=base /app/package*.json ./
 COPY --from=base /app/.next .next
 COPY --from=base /app/public ./public
@@ -57,6 +57,7 @@ COPY --from=base /app/next-env.d.ts ./
 # 10. Expose port and run the app
 EXPOSE 3000
 CMD ["npm", "start"]
+
 ```
 
 ---
